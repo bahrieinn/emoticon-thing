@@ -1,3 +1,10 @@
 class Photo < ActiveRecord::Base
-  # Remember to create a migration!
+  include Paperclip::Glue
+
+  attr_accessible :image
+
+  has_attached_file :image,
+    :styles => {
+      :medium => '640x480'
+    }
 end
