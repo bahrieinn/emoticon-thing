@@ -1,8 +1,5 @@
 #/uploader/uploader.rb
 class Uploader < CarrierWave::Uploader::Base
-  storage :file
+  storage :fog
 
-  def store_dir
-    'images'
-  end
 end
