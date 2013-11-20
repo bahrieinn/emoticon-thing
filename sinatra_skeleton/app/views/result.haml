@@ -1,0 +1,7 @@
+%h1 
+  =params[:emoticon]
+%a{href: "/#{@escaped_emoticon}/submit"}
+  %button
+    Submit Photo
+%div.gallery
+  =# loops over images
