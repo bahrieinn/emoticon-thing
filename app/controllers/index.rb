@@ -2,7 +2,7 @@
 
 get '/' do
   # Look in app/views/index.erb
-  haml :index
+  haml :camera
 end
 
 get '/search' do
@@ -21,9 +21,14 @@ end
 ######### POST ##########
 
 post '/:emoticon/submit' do
-  photo = Photo.new(params[:photo])
-  if photo.save 
-    redirect '/'
-  else
+  if request.xhr?
+    parsedData = JSON.parse(request.body.read)
+
+    photo = Photo.new
+    photo.image_data = parsedData['image']    
+    p photo.file
+    photo.save
+
   end
 end
+
