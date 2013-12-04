@@ -6,8 +6,11 @@ get '/' do
 end
 
 get '/search' do
-
   redirect "/" + CGI.escape(params[:emoticon])
+end
+
+get '/:emoticon/submit' do
+	haml :submit
 end
 
 get '/:emoticon' do
