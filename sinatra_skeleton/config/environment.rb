@@ -22,6 +22,9 @@ require 'erb'
 
 require 'cgi'
 
+require 'carrierwave'
+require 'carrierwave/orm/activerecord'
+require 'mini_magick'
 
 # Some helper constants for path-centric logic
 APP_ROOT = Pathname.new(File.expand_path('../../', __FILE__))
@@ -31,31 +34,27 @@ APP_NAME = APP_ROOT.basename.to_s
 # Set up the controllers and helpers
 Dir[APP_ROOT.join('app', 'controllers', '*.rb')].each { |file| require file }
 Dir[APP_ROOT.join('app', 'helpers', '*.rb')].each { |file| require file }
+Dir[APP_ROOT.join('app', 'uploaders', '*.rb')].each { |file| require file }
 
 # Set up the database and models
 require APP_ROOT.join('config', 'database')
 
-set :root, APP_ROOT
 
 # CarrierWave config 
-Dir[APP_ROOT.join('app', 'uploader', '*.rb')].each { |file| require file }
-require 'carrierwave'
-require 'carrierwave/orm/activerecord'
-require 'mini_magick'
+env_config = YAML.load_file(APP_ROOT.join('config', 's3.yaml'))
+
+env_config.each do |key, value|
+  ENV[key] = value
+end
 
 CarrierWave.configure do |config|
     config.root = APP_ROOT + 'public/'
 
     config.fog_credentials = {
       :provider               => 'AWS',                        # required
-      :aws_access_key_id      => 'xxx',                        # required
-      :aws_secret_access_key  => 'yyy',                        # required
-      :region                 => 'eu-west-1',                  # optional, defaults to 'us-east-1'
-      :host                   => 's3.example.com',             # optional, defaults to nil
-      :endpoint               => 'https://s3.example.com:8080' # optional, defaults to nil
+      :aws_access_key_id      =>  ENV['AWS_ID'],               # required
+      :aws_secret_access_key  =>  ENV['AWS_SECRET']            # required
     }
-    config.fog_directory  = 'name_of_directory'                     # required
-    config.fog_public     = false                                   # optional, defaults to true
-    config.fog_attributes = {'Cache-Control'=>'max-age=315576000'}  # optional, defaults to {}
+    config.fog_directory  = ENV['AWS_S3_BUCKET']                   # required
 end
 

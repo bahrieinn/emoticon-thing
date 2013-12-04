@@ -10,6 +10,9 @@ configure do
 
   # Set the views to 
   set :views, File.join(Sinatra::Application.root, "app", "views")
+
+  # load config files
+
 end
 
 run Sinatra::Application

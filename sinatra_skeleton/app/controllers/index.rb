@@ -1,6 +1,7 @@
 
 get '/' do
   # Look in app/views/index.erb
+  p ENV['AWS_S3_BUCKET']  
   haml :index
 end
 
