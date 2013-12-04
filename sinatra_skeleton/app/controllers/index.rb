@@ -18,7 +18,7 @@ get '/:emoticon' do
   haml :result
 end
 
-######### GET ##########
+######### POST ##########
 
 post '/:emoticon/submit' do
   photo = Photo.new(params[:photo])
