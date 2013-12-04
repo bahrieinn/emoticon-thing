@@ -1,7 +1,17 @@
 %h1 
   =params[:emoticon]
-%a{href: "/#{@escaped_emoticon}/submit"}
-  %button
-    Submit Photo
+%form{enctype: 'multipart/form-data', action:"/#{@escaped_emoticon}/submit", method: 'POST'}
+  %input{type:'hidden', name: 'photo[emoticon]',value: params[:emoticon]}
+  %input{type:'file', name:'photo[file]'}
+  %input{type:'submit', value:'Submit Photo'}
 %div.gallery
   =# loops over images
+
+
+  / <form enctype="multipart/form-data" action="/" method="POST">
+  /   <label>Name: <input type="text" name="user[name]"></label>
+  /   <br>
+  /   <label>Photo: <input type="file" name="user[photo]"></label>
+  /   <br>
+  /   <input type="submit">
+  / </form>
