@@ -1,7 +1,7 @@
+######### GET ##########
 
 get '/' do
   # Look in app/views/index.erb
-  p ENV['AWS_S3_BUCKET']  
   haml :index
 end
 
@@ -13,4 +13,14 @@ end
 get '/:emoticon' do
   @escaped_emoticon = CGI.escape(params[:emoticon])
   haml :result
+end
+
+######### GET ##########
+
+post '/:emoticon/submit' do
+  photo = Photo.new(params[:photo])
+  if photo.save 
+    redirect '/'
+  else
+  end
 end
